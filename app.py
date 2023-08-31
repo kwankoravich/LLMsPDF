@@ -12,7 +12,7 @@ from htmlTemplates import css, bot_template, user_template
 from langchain.llms import HuggingFaceHub
 
 import os
-
+os.environ["OPENAI_API_KEY"] = "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"
 
 PATH_DOCS = './docs'
 
@@ -38,15 +38,15 @@ def get_text_chunks(text):
     return chunks
 
 
-def get_vectorstore(text_chunks,openai_key):
-    embeddings = OpenAIEmbeddings(openai_api_key = openai_key)
+def get_vectorstore(text_chunks):
+    embeddings = OpenAIEmbeddings()
     # embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-xl")
     vectorstore = FAISS.from_texts(texts=text_chunks, embedding=embeddings)
     return vectorstore
 
 
-def get_conversation_chain(vectorstore,openai_api_key):
-    llm = ChatOpenAI(openai_api_key,model_name="gpt-4")
+def get_conversation_chain(vectorstore):
+    llm = ChatOpenAI(model_name="gpt-4")
     # llm = HuggingFaceHub(repo_id="google/flan-t5-xxl", model_kwargs={"temperature":0.5, "max_length":512})
 
     # Define the system message template
@@ -103,7 +103,7 @@ def main():
         handle_userinput(user_question)
 
     with st.sidebar:
-        openai_key = st.text_input('OpenAI API KEY', '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')
+        # openai_key = st.text_input('OpenAI API KEY', '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')
         st.subheader("Your documents")
         pdf_docs = st.file_uploader(
             "Upload your PDFs here and click on 'Process'", accept_multiple_files=True)
@@ -116,11 +116,11 @@ def main():
                 text_chunks = get_text_chunks(raw_text)
 
                 # create vector store
-                vectorstore = get_vectorstore(text_chunks, openai_key)
+                vectorstore = get_vectorstore(text_chunks)
 
                 # create conversation chain
                 st.session_state.conversation = get_conversation_chain(
-                    vectorstore, openai_key)
+                    vectorstore)
                 
     
 
