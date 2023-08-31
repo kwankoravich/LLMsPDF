@@ -12,7 +12,7 @@ from htmlTemplates import css, bot_template, user_template
 from langchain.llms import HuggingFaceHub
 
 import os
-os.environ["OPENAI_API_KEY"] = "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"
+os.environ["OPENAI_API_KEY"] = "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"
 
 PATH_DOCS = './docs'
 
