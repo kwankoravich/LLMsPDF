@@ -45,8 +45,8 @@ def get_vectorstore(text_chunks):
     return vectorstore
 
 
-def get_conversation_chain(vectorstore):
-    llm = ChatOpenAI(model_name="gpt-4")
+def get_conversation_chain(vectorstore,openai_api_key):
+    llm = ChatOpenAI(openai_api_key,model_name="gpt-4")
     # llm = HuggingFaceHub(repo_id="google/flan-t5-xxl", model_kwargs={"temperature":0.5, "max_length":512})
 
     # Define the system message template
@@ -87,7 +87,7 @@ def handle_userinput(user_question):
 
 
 def main():
-    load_dotenv()
+    # load_dotenv()
     st.set_page_config(page_title="Lief Capital Chatbot",
                        page_icon=":books:")
     st.write(css, unsafe_allow_html=True)
@@ -103,6 +103,7 @@ def main():
         handle_userinput(user_question)
 
     with st.sidebar:
+        openai_key = st.text_input('OpenAI API KEY', 'Enter the key')
         st.subheader("Your documents")
         pdf_docs = st.file_uploader(
             "Upload your PDFs here and click on 'Process'", accept_multiple_files=True)
@@ -119,7 +120,7 @@ def main():
 
                 # create conversation chain
                 st.session_state.conversation = get_conversation_chain(
-                    vectorstore)
+                    vectorstore, openai_key)
                 
     
 
