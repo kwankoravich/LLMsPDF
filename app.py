@@ -116,7 +116,7 @@ def main():
                 text_chunks = get_text_chunks(raw_text)
 
                 # create vector store
-                vectorstore = get_vectorstore(text_chunks)
+                vectorstore = get_vectorstore(text_chunks, openai_key)
 
                 # create conversation chain
                 st.session_state.conversation = get_conversation_chain(
