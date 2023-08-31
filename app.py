@@ -38,8 +38,8 @@ def get_text_chunks(text):
     return chunks
 
 
-def get_vectorstore(text_chunks):
-    embeddings = OpenAIEmbeddings()
+def get_vectorstore(text_chunks,openai_key ):
+    embeddings = OpenAIEmbeddings(openai_key)
     # embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-xl")
     vectorstore = FAISS.from_texts(texts=text_chunks, embedding=embeddings)
     return vectorstore
@@ -103,7 +103,7 @@ def main():
         handle_userinput(user_question)
 
     with st.sidebar:
-        openai_key = st.text_input('OpenAI API KEY', 'Enter the key')
+        openai_key = st.text_input('OpenAI API KEY', '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')
         st.subheader("Your documents")
         pdf_docs = st.file_uploader(
             "Upload your PDFs here and click on 'Process'", accept_multiple_files=True)
